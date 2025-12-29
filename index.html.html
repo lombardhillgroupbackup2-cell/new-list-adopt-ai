@@ -3,384 +3,405 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Milestones & Pioneers</title>
+<title>AI Milestones: A Journey</title>
 <style>
+  /* --- CORE RESET & FONTS --- */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
   body {
-    font-family: "Merriweather", serif;
-    background: #0c1526;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #050505;
     color: #f5f5f5;
-    overflow-x: hidden;
-    line-height: 1.5;
+    overflow: hidden; 
+    height: 100svh; /* Optimized for mobile browser bars */
+    width: 100vw;
+    display: flex;
+    flex-direction: row; 
   }
 
-  /* --- VIDEO-STYLE INTRO OVERLAY --- */
+  /* --- INTRO OVERLAY --- */
   #intro-overlay {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at center, #4d0b31 0%, #1a0624 100%);
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.5s, transform 1.5s ease-in;
-    text-align: center;
+    z-index: 1000;
+    transition: opacity 1.5s ease-out, visibility 1.5s;
     flex-direction: column;
-    padding: 20px;
+    text-align: center;
   }
 
   #intro-overlay.hidden {
     opacity: 0;
     visibility: hidden;
-    transform: scale(1.1);
+    pointer-events: none;
   }
 
   .counter-number {
-    font-size: clamp(60px, 20vw, 150px);
-    font-weight: 200;
-    line-height: 1;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(60px, 15vw, 150px);
+    font-weight: 300;
+    color: #d4af37;
     letter-spacing: -2px;
-    font-family: sans-serif;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
   }
 
   .counter-label {
-    font-size: clamp(10px, 3vw, 16px);
+    font-size: clamp(12px, 2vw, 16px);
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 15px;
   }
 
-  /* --- LAYOUT STRUCTURE --- */
-  #constellation { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-
-  .container {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
-    z-index: 1;
-    flex-direction: row; /* Desktop Default */
-  }
-
-  /* --- SIDEBAR --- */
+  /* --- SIDEBAR (LEFT) --- */
   .sidebar {
-    width: 350px;
+    width: 320px;
     flex-shrink: 0;
-    padding: 40px 25px;
-    border-right: 1px solid rgba(212, 175, 55, 0.4);
+    background: rgba(10, 10, 10, 0.95);
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    z-index: 100;
     overflow-y: auto;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    background: rgba(12, 21, 38, 0.85);
-    backdrop-filter: blur(10px);
+    font-size: 0.85rem;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.8);
   }
 
-  .sidebar h2 { 
-    color: #d4af37; 
-    font-size: clamp(18px, 2vw, 22px); 
-    margin-bottom: 25px; 
-    text-transform: uppercase; 
-    letter-spacing: 2px;
+  .sidebar h2 {
+    color: #d4af37;
     border-bottom: 2px solid #d4af37;
-    display: inline-block;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
-  
-  .reference { 
-    margin-bottom: 18px; 
-    font-size: 11px; 
-    line-height: 1.5; 
-    color: #bbb; 
+
+  .reference {
+    margin-bottom: 18px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #222;
+    color: #777;
+    line-height: 1.4;
   }
-  .reference a { color: #d4af37; text-decoration: none; font-weight: bold; }
-
-  /* --- TIMELINE --- */
-  .timeline-wrapper {
-    flex-grow: 1;
-    overflow: hidden;
-    position: relative;
-    height: 100vh;
-  }
-
-  .timeline { 
-    position: absolute; 
-    width: 100%; 
-    padding: 10vh 5% 20vh 10%;
-    will-change: transform; 
-  }
-
-  .year-block {
-    margin-bottom: clamp(80px, 15vh, 150px);
-    border-left: 2px solid #d4af37;
-    padding-left: clamp(20px, 5vw, 40px);
-    position: relative;
-    max-width: 900px;
-  }
-
-  .year-block::before {
-    content: "";
-    position: absolute;
-    left: -9px;
-    top: 0;
-    width: 16px;
-    height: 16px;
-    background: #d4af37;
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
-  }
-
-  .year { 
-    font-size: clamp(32px, 6vw, 48px); 
-    font-weight: 700; 
-    color: #d4af37; 
-    margin-bottom: 10px; 
-    font-family: sans-serif;
-  }
-  .milestone { 
-    font-size: clamp(16px, 2.5vw, 20px); 
-    line-height: 1.6; 
-    color: #f0f0f0; 
-  }
-  .milestone span { color: #d4af37; font-weight: 600; }
-
-  /* Gradient Fades */
-  .fade-top, .fade-bottom {
-    position: absolute; left: 0; right: 0; height: 15vh;
-    z-index: 10; pointer-events: none;
-  }
-  .fade-top { top: 0; background: linear-gradient(to bottom, #0c1526 30%, transparent); }
-  .fade-bottom { bottom: 0; background: linear-gradient(to top, #0c1526 30%, transparent); }
-
-  /* --- RESPONSIVE BREAKPOINTS --- */
   
-  /* Tablet / Small Laptop */
-  @media (max-width: 1024px) {
-    .sidebar { width: 280px; }
+  .reference strong { color: #d4af37; margin-right: 5px; }
+
+  /* --- 3D SCENE CONTAINER --- */
+  #scene-container {
+    position: relative;
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
+    perspective: 1200px;
+    z-index: 1;
+    background: #000;
   }
 
-  /* Mobile Devices */
-  @media (max-width: 768px) {
-    .container { flex-direction: column; }
-    
-    .sidebar { 
-      width: 100%; 
-      height: 30vh; 
-      position: relative;
-      border-right: none;
-      border-bottom: 1px solid #d4af37;
-      order: 2; /* Sidebar moves to bottom or stays below */
-    }
-
-    .timeline-wrapper { 
-      height: 70vh; 
-      order: 1;
-    }
-
-    .year-block { margin-bottom: 100px; }
-    
-    .fade-top, .fade-bottom { height: 10vh; }
+  #background-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
   }
 
-  /* Very Small Screens */
-  @media (max-width: 480px) {
-    .year-block { padding-left: 20px; }
-    .sidebar { padding: 20px 15px; }
+  #world {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    z-index: 2;
+  }
+
+  /* --- TIMELINE ITEMS --- */
+  .timeline-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d;
+    text-align: center;
+    width: 90%;
+    max-width: 700px;
+    transform: translate3d(-50%, -50%, 0);
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .year-display {
+    font-size: clamp(50px, 10vw, 100px);
+    font-weight: 800;
+    color: #d4af37;
+    margin-bottom: 15px;
+    text-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    letter-spacing: -3px;
+  }
+
+  .milestone-text {
+    font-size: clamp(16px, 2.5vw, 26px);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(0, 0, 0, 0.85);
+    padding: clamp(15px, 4vw, 30px);
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+  }
+
+  .milestone-text span { color: #d4af37; font-weight: bold; }
+
+  /* --- MOBILE ADJUSTMENTS --- */
+  @media (max-width: 850px) {
+    body { flex-direction: column; overflow-y: auto; }
+    .sidebar { width: 100%; height: auto; order: 2; border-right: none; border-top: 1px solid #333; }
+    #scene-container { height: 60svh; order: 1; flex-grow: 0; position: sticky; top: 0; }
+    .timeline-item { width: 85%; }
   }
 </style>
 </head>
 <body>
 
 <div id="intro-overlay">
-    <div class="counter-number" id="year-counter">0</div>
-    <div class="counter-label">Years of<br>Digital Intelligence</div>
+  <div class="counter-number" id="year-counter">0</div>
+  <div class="counter-label">Years of<br>Artificial Intelligence</div>
 </div>
 
-<canvas id="constellation"></canvas>
+<aside class="sidebar">
+  <h2>References</h2>
+  <div id="references-list"></div>
+</aside>
 
-<div class="container">
-  <aside class="sidebar">
-    <h2>References</h2>
-    <div id="references-list"></div>
-  </aside>
-
-  <div class="timeline-wrapper">
-    <div class="fade-top"></div>
-    <div class="fade-bottom"></div>
-    <section class="timeline" id="timeline">
-      
-      <div class="year-block">
-        <div class="year">1950</div>
-        <div class="milestone"><span>Alan Turing</span> publishes "Computing Machinery and Intelligence," posing the question: "Can machines think?"</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">1956</div>
-        <div class="milestone"><span>John McCarthy</span> and others host the Dartmouth Conference, coining <span>"Artificial Intelligence."</span></div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">1966</div>
-        <div class="milestone"><span>Joseph Weizenbaum</span> creates ELIZA, the first chatterbot and NLP pioneer.</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">1974</div>
-        <div class="milestone">The first <span>"AI Winter"</span> begins as funding cools due to limited computational power.</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">1980</div>
-        <div class="milestone"><span>Edward Feigenbaum</span> introduces Expert Systems into the corporate world.</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">1997</div>
-        <div class="milestone">IBM’s <span>Deep Blue</span> defeats Kasparov. LSTM networks are proposed.</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">2012</div>
-        <div class="milestone"><span>Geoffrey Hinton</span> proves the power of Deep Learning with AlexNet.</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">2017</div>
-        <div class="milestone">The <span>"Transformer"</span> architecture is born, changing NLP forever.</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">2022</div>
-        <div class="milestone"><span>OpenAI</span> launches ChatGPT, bringing AI to the global masses.</div>
-      </div>
-
-      <div class="year-block">
-        <div class="year">2024</div>
-        <div class="milestone"><span>Jasmin Bharadiya</span> & <span>Ricardo Climent</span> publish research on AI-native business automation.</div>
-      </div>
-
-    </section>
-  </div>
+<div id="scene-container">
+  <canvas id="background-canvas"></canvas>
+  <div id="world"></div>
 </div>
 
 <script>
-  // UPDATED REFERENCE DATA (Total 27)
-const refs = [
-  "Bharadiya, Jasmin. 2023. 'The Impact of Artificial Intelligence on Business Processes.' European Journal of Technology 7 (2): 15–25. https://doi.org/10.47672/ejt.1488",
-  "Bharadiya, J. P., R. K. Thomas, and F. Ahmed. 2023. 'Rise of Artificial Intelligence in Business and Industry.' Journal of Engineering Research and Reports 25 (3): 85–103. https://doi.org/10.9734/jerr/2023/v25i3893",
-  "Climent, R. C., D. M. Haftor, and M. W. Staniewski. 2024. 'AI-Enabled Business Models for Competitive Advantage.' Journal of Innovation & Knowledge 9 (3): 100532. https://doi.org/10.1016/j.jik.2024.100532",
-  "Edilia, S., and N. D. Larasati. 2023. 'Innovative Approaches in Business Development Strategies.' ITSDI 5 (1): 84–90. https://doi.org/10.34306/itsdi.v5i1.612",
-  "Enholm, I. M., et al. 2022. 'Artificial Intelligence and Business Value: A Literature Review.' Information Systems Frontiers 24 (5): 1709–34. https://doi.org/10.1007/s10796-021-10186-w",
-  "Forman Christian College. 2023. 'Impact of AI on Business Growth.' The Business and Management Review 14 (02). https://doi.org/10.24052/BMR/V14NU02/ART-24",
-  "Hajipour, V., et al. 2023. 'A Value-Oriented AI-as-a-Service Business Plan.' Decision Analytics Journal 8: 100302. https://doi.org/10.1016/j.dajour.2023.100302",
-  "John, M. M., et al. 2023. 'Towards an AI-Driven Business Development Framework.' J. Softw. Evol. Proc. 35 (6): e2432. https://doi.org/10.1002/smr.2432",
-  "Joint Doctoral School / Sira, M. 2022. 'AI and Its Application in Business Management.' Silesian University. https://doi.org/10.29119/1641-3466.2022.165.23",
-  "Kanbach, D. K., et al. 2024. 'The GenAI Is out of the Bottle.' Review of Managerial Science 18 (4): 1189–220. https://doi.org/10.1007/s11846-023-00696-z",
-  "Kitsios, F., and M. Kamariotou. 2021. 'AI and Business Strategy towards Digital Transformation.' Sustainability 13 (4): 2025. https://doi.org/10.3390/su13042025",
-  "Lee, J., et al. 2019. 'Emerging Technology and Business Model Innovation: AI Case.' JOItmC 5 (3): 44. https://doi.org/10.3390/joitmc5030044",
-  "Liladhar Rane, N., et al. 2025. 'AI, ML, and DL for Advanced Business Strategies.' PUI Journal. https://puiij.com/index.php/research/article/view/143",
-  "Mishra, S., and A. R. Tripathi. 2021. 'AI Business Model: An Integrative Business Approach.' JIE 10 (1): 18. https://doi.org/10.1186/s13731-021-00157-5",
-  "Namaki, M. S. S. El. 2019. 'How Companies Are Applying AI to Business Strategy.' SIJBPG 5 (8): 77. https://doi.org/10.19085/journal.sijbpg050801",
-  "Njeru, F. 2023. 'A Review of Artificial Intelligence and Its Application in Business.' JEBI: 44–53. https://doi.org/10.53759/5181/JEBI202303005",
-  "Pallathadka, H., et al. 2023. 'Applications of AI in Business Management, e-Commerce and Finance.' Materials Today 80: 2610–13. https://doi.org/10.1016/j.matpr.2021.06.419",
-  "Prasanth, A., et al. 2023. 'Role of AI and Business Decision Making.' IJACSA 14 (6). https://doi.org/10.14569/IJACSA.2023.01406103",
-  "Rahman, P., and S. Mehnaz. 2024. 'International Journal for Multidisciplinary Research.' SSRN. https://doi.org/10.2139/ssrn.5054029",
-  "Reim, W., et al. 2020. 'Implementation of AI: A Roadmap for Business Model Innovation.' AI 1 (2): 180–91. https://doi.org/10.3390/ai1020011",
-  "Ruiz-Real, J. L., et al. 2020. 'AI in Business and Economics Research: Trends.' JBEM 22 (1): 98–117. https://doi.org/10.3846/jbem.2020.13641",
-  "Sadiku, M. N. O., et al. 2020. 'Artificial Intelligence in Business.' IJERAT 06 (07): 62–70. https://doi.org/10.31695/IJERAT.2020.3625",
-  "Soni, N., et al. 2019. 'Impact of AI on Businesses: From Research to Innovation.' arXiv:1905.02092. https://doi.org/10.48550/arXiv.1905.02092",
-  "Soni, N., et al. 2020. 'AI in Business: From Research to Market Deployment.' Procedia Computer Science 167: 2200–2210. https://doi.org/10.1016/j.procs.2020.03.272",
-  "Thilagavathy, N., and R. Venkatasamy. 'AI Technologies Adaptation in Business Management.' Int. J. Interdisciplinary Org. Studies.",
-  "Xiong, Y., et al. 'Artificial Intelligence and Business Applications, an Introduction.' https://doi.org/10.1504/IJTM.2020.112615",
-  "Zhou, X., et al. 2022. 'Impact of AI on Business Strategy in Emerging Markets.' IJOEM 17 (4): 917–29. https://doi.org/10.1108/IJOEM-04-2022-995"
-];
+  // --- 1. DATA ---
+  const timelineData = [
+    { year: 1950, text: "<span>Alan Turing</span> publishes 'Computing Machinery and Intelligence,' posing the question: 'Can machines think?'" },
+    { year: 1956, text: "<span>John McCarthy</span> and others host the Dartmouth Conference, coining <span>'Artificial Intelligence.'</span>" },
+    { year: 1966, text: "<span>Joseph Weizenbaum</span> creates ELIZA, the first chatterbot and <span>NLP</span> pioneer." },
+    { year: 1974, text: "The first <span>'AI Winter'</span> begins as funding cools due to limited computational power." },
+    { year: 1980, text: "<span>Edward Feigenbaum</span> introduces Expert Systems into the corporate world." },
+    { year: 1997, text: "IBM’s <span>Deep Blue</span> defeats Kasparov. <span>LSTM</span> networks are proposed." },
+    { year: 2012, text: "<span>Geoffrey Hinton</span> proves the power of Deep Learning with AlexNet." },
+    { year: 2017, text: "The <span>'Transformer'</span> architecture is born, changing <span>NLP</span> forever." },
+    { year: 2022, text: "<span>OpenAI</span> launches ChatGPT, bringing <span>Generative AI</span> to the global masses." },
+    { year: 2024, text: "<span>Jasmin Bharadiya</span> & <span>Ricardo Climent</span> publish research on AI-native business automation." }
+  ];
 
-const refContainer = document.getElementById('references-list');
-refs.forEach((r, i) => {
-  const div = document.createElement('div');
-  div.className = 'reference';
-  div.innerHTML = `<strong>[${i+1}]</strong> ${r.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">Link</a>')}`;
-  refContainer.appendChild(div);
-});
+  const refs = [
+    "Bharadiya, Jasmin. 2023. 'The Impact of Artificial Intelligence on Business Processes.' European Journal of Technology.",
+    "Bharadiya, J. P., et al. 2023. 'Rise of Artificial Intelligence in Business and Industry.' Journal of Engineering Research and Reports.",
+    "Climent, R. C., et al. 2024. 'AI-Enabled Business Models for Competitive Advantage.' Journal of Innovation & Knowledge.",
+    "Edilia, S., and N. D. Larasati. 2023. 'Innovative Approaches in Business Development Strategies.' ITSDI.",
+    "Enholm, I. M., et al. 2022. 'Artificial Intelligence and Business Value.' Information Systems Frontiers.",
+    "Forman Christian College. 2023. 'Impact of AI on Business Growth.' The Business and Management Review.",
+    "Hajipour, V., et al. 2023. 'A Value-Oriented AI-as-a-Service Business Plan.' Decision Analytics Journal.",
+    "John, M. M., et al. 2023. 'Towards an AI-Driven Business Development Framework.' J. Softw. Evol. Proc.",
+    "Joint Doctoral School / Sira, M. 2022. 'AI and Its Application in Business Management.' Silesian University.",
+    "Kanbach, D. K., et al. 2024. 'The GenAI Is out of the Bottle.' Review of Managerial Science.",
+    "Kitsios, F., and M. Kamariotou. 2021. 'AI and Business Strategy towards Digital Transformation.' Sustainability.",
+    "Lee, J., et al. 2019. 'Emerging Technology and Business Model Innovation: AI Case.' JOItmC.",
+    "Liladhar Rane, N., et al. 2025. 'AI, ML, and DL for Advanced Business Strategies.' PUI Journal.",
+    "Mishra, S., and A. R. Tripathi. 2021. 'AI Business Model: An Integrative Business Approach.' JIE.",
+    "Namaki, M. S. S. El. 2019. 'How Companies Are Applying AI to Business Strategy.' SIJBPG.",
+    "Njeru, F. 2023. 'A Review of Artificial Intelligence and Its Application in Business.' JEBI.",
+    "Pallathadka, H., et al. 2023. 'Applications of AI in Business Management, e-Commerce and Finance.' Materials Today.",
+    "Prasanth, A., et al. 2023. 'Role of AI and Business Decision Making.' IJACSA.",
+    "Rahman, P., and S. Mehnaz. 2024. 'International Journal for Multidisciplinary Research.' SSRN.",
+    "Reim, W., et al. 2020. 'Implementation of AI: A Roadmap for Business Model Innovation.' AI.",
+    "Ruiz-Real, J. L., et al. 2020. 'AI in Business and Economics Research: Trends.' JBEM.",
+    "Sadiku, M. N. O., et al. 2020. 'Artificial Intelligence in Business.' IJERAT.",
+    "Soni, N., et al. 2019. 'Impact of AI on Businesses: From Research to Innovation.' arXiv.",
+    "Soni, N., et al. 2020. 'AI in Business: From Research to Market Deployment.' Procedia Computer Science.",
+    "Thilagavathy, N., et al. 'AI Technologies Adaptation in Business Management.' Int. J. Interdisciplinary Org. Studies.",
+    "Xiong, Y., et al. 'Artificial Intelligence and Business Applications.'",
+    "Zhou, X., et al. 2022. 'Impact of AI on Business Strategy in Emerging Markets.' IJOEM."
+  ];
 
-  // INTRO COUNTER
+  // Populate Sidebar
+  const refContainer = document.getElementById('references-list');
+  refs.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.className = 'reference';
+    div.innerHTML = `<strong>[${i+1}]</strong> ${r}`;
+    refContainer.appendChild(div);
+  });
+
+  // --- 2. INTRO COUNTER ---
   const counterElement = document.getElementById('year-counter');
   const introOverlay = document.getElementById('intro-overlay');
   let currentCount = 0;
   const targetCount = 74; 
   
   const counterInterval = setInterval(() => {
-    currentCount += 2; // Faster increment for better UX
+    currentCount += 1;
     if(currentCount > targetCount) currentCount = targetCount;
     counterElement.innerText = currentCount;
     if (currentCount >= targetCount) {
       clearInterval(counterInterval);
-      setTimeout(() => introOverlay.classList.add('hidden'), 500);
+      setTimeout(() => {
+        introOverlay.classList.add('hidden');
+        startTimelineAnimation();
+      }, 800);
     }
-  }, 40);
+  }, 30);
 
-  // TIMELINE AUTO-SCROLL
-  const timeline = document.getElementById("timeline");
-  let pos = 0;
-  function scrollTimeline() {
-    pos -= 0.5; // Scroll speed
-    timeline.style.transform = `translateY(${pos}px)`;
-    if (Math.abs(pos) > timeline.scrollHeight) pos = window.innerHeight;
-    requestAnimationFrame(scrollTimeline);
-  }
-  scrollTimeline();
+  // --- 3. 3D TEXT ENGINE ---
+  const world = document.getElementById('world');
+  const Z_SPACING = 2200;  
+  const CAMERA_SPEED = 1.8; 
+  const START_Z = 2000;    
+  
+  const items = timelineData.map((data, index) => {
+    const el = document.createElement('div');
+    el.className = 'timeline-item';
+    el.innerHTML = `<div class="year-display">${data.year}</div><div class="milestone-text">${data.text}</div>`;
+    world.appendChild(el);
+    return { element: el, z: index * Z_SPACING + START_Z };
+  });
 
-  // RESPONSIVE CONSTELLATION ENGINE
-  const canvas = document.getElementById('constellation');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
+  let cameraZ = 0;
 
-  function initStars() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const density = (canvas.width * canvas.height) / 8000; // Adaptive density
-    stars = Array.from({length: Math.min(density, 150)}, () => ({
-      x: Math.random()*canvas.width, 
-      y: Math.random()*canvas.height,
-      vx: (Math.random()-0.5)*0.3, 
-      vy: (Math.random()-0.5)*0.3
-    }));
+  function startTimelineAnimation() {
+    requestAnimationFrame(renderTimeline);
   }
 
-  window.addEventListener('resize', initStars);
-  initStars();
+  function renderTimeline() {
+    cameraZ += CAMERA_SPEED;
+    const totalDepth = items.length * Z_SPACING;
 
-  function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
-    
-    stars.forEach(s => {
-      s.x += s.vx; s.y += s.vy;
-      if (s.x<0||s.x>canvas.width) s.vx*=-1;
-      if (s.y<0||s.y>canvas.height) s.vy*=-1;
-      ctx.beginPath(); ctx.arc(s.x, s.y, 1, 0, Math.PI*2); ctx.fill();
+    items.forEach((item) => {
+      let relativeZ = item.z - cameraZ;
+      while (relativeZ < -1500) {
+        item.z += totalDepth;
+        relativeZ += totalDepth;
+      }
+
+      let opacity = relativeZ > 2500 ? 0 : relativeZ > 500 ? 1 : Math.max(0, (relativeZ + 500) / 1000);
+      item.element.style.transform = `translate3d(-50%, -50%, ${-relativeZ}px)`;
+      item.element.style.opacity = opacity;
     });
 
-    const linkDist = canvas.width < 600 ? 80 : 130; // Shorter links on mobile
-    for(let i=0; i<stars.length; i++){
-      for(let j=i+1; j<stars.length; j++){
-        const d = Math.hypot(stars[i].x-stars[j].x, stars[i].y-stars[j].y);
-        if(d < linkDist){
-          ctx.strokeStyle = `rgba(212, 175, 55, ${1 - d/linkDist})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath(); ctx.moveTo(stars[i].x, stars[i].y);
-          ctx.lineTo(stars[j].x, stars[j].y); ctx.stroke();
+    requestAnimationFrame(renderTimeline);
+  }
+
+  // --- 4. COMBINED CANVAS (SHARP & REALISTIC SPACE) ---
+  const canvas = document.getElementById('background-canvas');
+  const ctx = canvas.getContext('2d');
+  let constellationStars = [];
+  let warpStars = [];
+  const warpCount = 250;
+
+  function initCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    
+    // Scale for High-DPI screens
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    
+    const w = rect.width;
+    const h = rect.height;
+
+    // Init Constellation Nodes
+    constellationStars = [];
+    const cCount = w < 800 ? 35 : 70;
+    for(let i=0; i<cCount; i++){
+      constellationStars.push({
+        x: Math.random() * w, 
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25, 
+        vy: (Math.random() - 0.5) * 0.25
+      });
+    }
+
+    // Init Warp Stars
+    warpStars = [];
+    for(let i=0; i<warpCount; i++) {
+      warpStars.push({
+        x: (Math.random() - 0.5) * w * 2,
+        y: (Math.random() - 0.5) * h * 2,
+        z: Math.random() * w,
+        brightness: Math.random() * 0.5 + 0.5
+      });
+    }
+  }
+
+  window.addEventListener('resize', initCanvas);
+  initCanvas();
+
+  function drawBackground() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+
+    ctx.fillStyle = '#050505';
+    ctx.fillRect(0, 0, w, h);
+    
+    const cx = w / 2;
+    const cy = h / 2;
+
+    // A. Draw Warp Stars
+    for(let i=0; i<warpCount; i++) {
+      let s = warpStars[i];
+      s.z -= 0.7; 
+      if (s.z <= 0) s.z = w;
+
+      const sx = (s.x / s.z) * cx + cx;
+      const sy = (s.y / s.z) * cy + cy;
+      const r = (1 - s.z / w) * 1.3;
+      let alpha = (1 - s.z / w) * s.brightness;
+
+      if (sx > 0 && sx < w && sy > 0 && sy < h) {
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // B. Draw Constellations
+    ctx.fillStyle = '#d4af37';
+    constellationStars.forEach(s => {
+      s.x += s.vx; s.y += s.vy;
+      if(s.x < 0 || s.x > w) s.vx *= -1;
+      if(s.y < 0 || s.y > h) s.vy *= -1;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, 1.1, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    const linkDist = 140;
+    ctx.lineWidth = 0.4;
+    for(let i=0; i<constellationStars.length; i++){
+      for(let j=i+1; j<constellationStars.length; j++){
+        const dx = constellationStars[i].x - constellationStars[j].x;
+        const dy = constellationStars[i].y - constellationStars[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < linkDist){
+          const alphaLine = (1 - (dist / linkDist)) * 0.35;
+          ctx.strokeStyle = `rgba(212, 175, 55, ${alphaLine})`;
+          ctx.beginPath();
+          ctx.moveTo(constellationStars[i].x, constellationStars[i].y);
+          ctx.lineTo(constellationStars[j].x, constellationStars[j].y);
+          ctx.stroke();
         }
       }
     }
-    requestAnimationFrame(draw);
+    
+    requestAnimationFrame(drawBackground);
   }
-  draw();
+  drawBackground();
 </script>
 </body>
 </html>
